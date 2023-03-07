@@ -23,11 +23,12 @@ const hero = () => {
         <div className="grid h-full items-center gap-4 md:grid-cols-12">
           <div className="col-span-6 flex h-full flex-col items-center justify-center py-10 md:items-start md:py-20 xl:col-span-4">
             <h1 className="text-jacarta-700 font-bold font-display mb-6 text-center text-5xl dark:text-white md:text-left lg:text-6xl xl:text-7xl">
-              Buy, sell and collect NFTs.
+              MantleMultisig{" "}
             </h1>
             <p className="dark:text-jacarta-200 mb-8 text-center text-lg md:text-left">
-              The worlds largest digital marketplace for crypto collectibles and
-              non-fungible tokens
+              A smart contract solution that ensures secure and efficient
+              transactions by requiring multiple signatures from authorized
+              parties, providing unparalleled protection and peace of mind.
             </p>
             <div className="flex space-x-4">
               <Link href="/create">
@@ -35,11 +36,11 @@ const hero = () => {
                   Upload
                 </a>
               </Link>
-              <Link href="/collection/explore_collection">
+              {/* <Link href="/collection/explore_collection">
                 <a className="text-accent shadow-white-volume hover:bg-accent-dark hover:shadow-accent-volume w-36 rounded-full bg-white py-3 px-8 text-center font-semibold transition-all hover:text-white">
                   Explore
                 </a>
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -47,11 +48,10 @@ const hero = () => {
           <div className="col-span-6 xl:col-span-8">
             <div className="relative text-center md:pl-8 md:text-right">
               <img
-                src="/images/land.jpeg"
+                src="/images/logo1.png"
                 alt=""
                 className="hero-img mt-8 inline-block w-72 rotate-[8deg] sm:w-full lg:w-[24rem] xl:w-[35rem]"
               />
-              
             </div>
           </div>
         </div>
