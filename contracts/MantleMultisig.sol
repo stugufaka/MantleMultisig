@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-contract Multisig {
+contract MantleMultisig {
     uint public requiredSignatures;
     mapping (address => bool) public isOwner;
     mapping (uint => bool) public usedNonces;

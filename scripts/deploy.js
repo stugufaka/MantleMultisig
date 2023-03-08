@@ -7,16 +7,16 @@ async function main() {
 
   let txHash, txReceipt;
 
-  const NFT = await hre.ethers.getContractFactory("NFT");
-  const nft = await NFT.deploy();
+  const MantleMultisig = await hre.ethers.getContractFactory("MantleMultisig");
+  const mantleMultisig = await MantleMultisig.deploy();
 
-  await nft.deployed();
+  await mantleMultisig.deployed();
 
-  txHash = nft.deployTransaction.hash;
+  txHash = mantleMultisig.deployTransaction.hash;
   txReceipt = await ethers.provider.waitForTransaction(txHash);
-  let nftaddress = txReceipt.contractAddress;
+  let mantleMultisigAddress = txReceipt.contractAddress;
 
-  console.log("nft contract address", nftaddress);
+  console.log("Mantle Multisig Contract Address", mantleMultisigAddress);
 }
 
 main()
