@@ -4,18 +4,18 @@ import {
   useEffect,
   useCallback,
   useReducer,
-} from 'react';
-import { useRouter } from 'next/router';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import { ethers, providers } from 'ethers';
-import { donationAddress } from '../config';
+} from "react";
+import { useRouter } from "next/router";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ethers, providers } from "ethers";
+import { donationAddress } from "../config";
 
-import axios from 'axios';
-import WalletLink from 'walletlink';
-import donationContract from '../artifacts/contracts/NFT.sol/NFT.json';
-
-import Web3Modal from 'web3modal';
-import { ellipseAddress, getChainData } from '../lib/utilities';
+import axios from "axios";
+import WalletLink from "walletlink";
+// import donationContract from "../artifacts/contracts/NFT.sol/NFT.json";
+import donationContract from "../artifacts/contracts/MantleMultisig.sol/MantleMultisig.json";
+import Web3Modal from "web3modal";
+import { ellipseAddress, getChainData } from "../lib/utilities";
 
 //write a type for status and use
 type authContextType = {
@@ -48,7 +48,7 @@ export const AuthContext = createContext<authContextType>(
   authContextDefaultValues
 );
 
-const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad';
+const INFURA_ID = "460f40a260564ac4a4f4b3fffb032dad";
 
 const providerOptions = {
   walletconnect: {
@@ -58,14 +58,14 @@ const providerOptions = {
     },
   },
 
-  'custom-walletlink': {
+  "custom-walletlink": {
     display: {
-      logo: 'https://play-lh.googleusercontent.com/PjoJoG27miSglVBXoXrxBSLveV6e3EeBPpNY55aiUUBM9Q1RCETKCOqdOkX2ZydqVf0',
-      name: 'Coinbase',
-      description: 'Connect to Coinbase Wallet (not Coinbase App)',
+      logo: "https://play-lh.googleusercontent.com/PjoJoG27miSglVBXoXrxBSLveV6e3EeBPpNY55aiUUBM9Q1RCETKCOqdOkX2ZydqVf0",
+      name: "Coinbase",
+      description: "Connect to Coinbase Wallet (not Coinbase App)",
     },
     options: {
-      appName: 'Coinbase', // Your app name
+      appName: "Coinbase", // Your app name
       networkUrl: `https://mainnet.infura.io/v3/${INFURA_ID}`,
       chainId: 1,
     },
@@ -83,9 +83,9 @@ const providerOptions = {
 };
 
 let web3Modal;
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   web3Modal = new Web3Modal({
-    network: 'mainnet', // optional
+    network: "mainnet", // optional
     cacheProvider: true,
     providerOptions, // required
   });
@@ -103,36 +103,36 @@ type StateType = {
 
 type ActionType =
   | {
-      type: 'SET_WEB3_PROVIDER';
-      provider?: StateType['provider'];
-      web3Provider?: StateType['web3Provider'];
-      address?: StateType['address'];
-      chainId?: StateType['chainId'];
+      type: "SET_WEB3_PROVIDER";
+      provider?: StateType["provider"];
+      web3Provider?: StateType["web3Provider"];
+      address?: StateType["address"];
+      chainId?: StateType["chainId"];
       // ethprice?: StateType['ethprice'];
     }
   | {
-      type: 'SET_CONTRACT';
-      contract?: StateType['contract'];
+      type: "SET_CONTRACT";
+      contract?: StateType["contract"];
     }
   | {
-      type: 'SET_SIGNER';
+      type: "SET_SIGNER";
 
-      signer?: StateType['signer'];
+      signer?: StateType["signer"];
     }
   | {
-      type: 'SET_ADDRESS';
-      address?: StateType['address'];
+      type: "SET_ADDRESS";
+      address?: StateType["address"];
     }
   | {
-      type: 'SET_CHAIN_ID';
-      chainId?: StateType['chainId'];
+      type: "SET_CHAIN_ID";
+      chainId?: StateType["chainId"];
     }
   | {
-      type: 'SET_ETH_PRICE';
-      ethprice?: StateType['ethprice'];
+      type: "SET_ETH_PRICE";
+      ethprice?: StateType["ethprice"];
     }
   | {
-      type: 'RESET_WEB3_PROVIDER';
+      type: "RESET_WEB3_PROVIDER";
     };
 
 const initialState: StateType = {
@@ -147,7 +147,7 @@ const initialState: StateType = {
 
 function reducer(state: StateType, action: ActionType): StateType {
   switch (action.type) {
-    case 'SET_WEB3_PROVIDER':
+    case "SET_WEB3_PROVIDER":
       return {
         ...state,
         provider: action.provider,
@@ -155,33 +155,33 @@ function reducer(state: StateType, action: ActionType): StateType {
         address: action.address,
         chainId: action.chainId,
       };
-    case 'SET_CONTRACT':
+    case "SET_CONTRACT":
       return {
         ...state,
 
         contract: action.contract,
       };
-    case 'SET_SIGNER':
+    case "SET_SIGNER":
       return {
         ...state,
         signer: action.signer,
       };
-    case 'SET_ADDRESS':
+    case "SET_ADDRESS":
       return {
         ...state,
         address: action.address,
       };
-    case 'SET_CHAIN_ID':
+    case "SET_CHAIN_ID":
       return {
         ...state,
         chainId: action.chainId,
       };
-    case 'SET_ETH_PRICE':
+    case "SET_ETH_PRICE":
       return {
         ...state,
         ethprice: action.ethprice,
       };
-    case 'RESET_WEB3_PROVIDER':
+    case "RESET_WEB3_PROVIDER":
       return initialState;
     default:
       throw new Error();
@@ -204,9 +204,13 @@ const AuthProvider = ({ children }) => {
   async function loadContracts() {
     /* create a generic provider and query for unsold market items */
     // const provider = new ethers.providers.JsonRpcProvider();
+    // const provider = new ethers.providers.JsonRpcProvider(
+    //   'https://rpc-mumbai.maticvigil.com/'
+    // );
     const provider = new ethers.providers.JsonRpcProvider(
-      'https://rpc-mumbai.maticvigil.com/'
+      "https://rpc.testnet.mantle.xyz"
     );
+
     // 'https://rpc-mumbai.matic.today'
     // https://polygon-mumbai.g.alchemy.com/v2/2bGIFu-iEnl9RvAOTe1ddZI2gBnuYQGS'
     // 'https://rpc-mumbai.matic.today'
@@ -225,21 +229,21 @@ const AuthProvider = ({ children }) => {
     // const getUsd = await contract?.getEthUsd();
     // let number = Number(getUsd.toString());
     // let ethUSDPrice = ethers.utils.formatUnits(number, 8);
-    let ethUSDPrice = '1721.00';
+    let ethUSDPrice = "1721.00";
     dispatch({
-      type: 'SET_ETH_PRICE',
+      type: "SET_ETH_PRICE",
       ethprice: ethUSDPrice,
     });
     const { chainId } = await provider.getNetwork();
     if (chainId) {
       dispatch({
-        type: 'SET_CONTRACT',
+        type: "SET_CONTRACT",
         contract: contract,
       });
 
       // const data = await contract.donationCount();
     } else {
-      window.alert('Donation contract not deployed to detected network');
+      window.alert("Donation contract not deployed to detected network");
     }
   }
 
@@ -262,7 +266,7 @@ const AuthProvider = ({ children }) => {
     // console.log(signer);
 
     dispatch({
-      type: 'SET_WEB3_PROVIDER',
+      type: "SET_WEB3_PROVIDER",
       provider,
       web3Provider,
       address,
@@ -273,18 +277,18 @@ const AuthProvider = ({ children }) => {
   const disconnect = useCallback(
     async function () {
       await web3Modal.clearCachedProvider();
-      if (provider?.disconnect && typeof provider.disconnect === 'function') {
+      if (provider?.disconnect && typeof provider.disconnect === "function") {
         await provider.disconnect();
       }
       dispatch({
-        type: 'RESET_WEB3_PROVIDER',
+        type: "RESET_WEB3_PROVIDER",
       });
     },
     [provider]
   );
 
   const logout = () => {
-    alert('something');
+    alert("something");
   };
 
   useEffect(() => {
@@ -300,7 +304,7 @@ const AuthProvider = ({ children }) => {
       const handleAccountsChanged = (accounts: string[]) => {
         // console.log('accountsChanged', accounts);
         dispatch({
-          type: 'SET_ADDRESS',
+          type: "SET_ADDRESS",
           address: accounts[0],
         });
       };
@@ -313,7 +317,7 @@ const AuthProvider = ({ children }) => {
       );
 
       dispatch({
-        type: 'SET_SIGNER',
+        type: "SET_SIGNER",
         signer: signer,
       });
 
@@ -322,20 +326,20 @@ const AuthProvider = ({ children }) => {
       };
 
       const handleDisconnect = (error: { code: number; message: string }) => {
-        console.log('disconnect', error);
+        console.log("disconnect", error);
         disconnect();
       };
 
-      provider.on('accountsChanged', handleAccountsChanged);
-      provider.on('chainChanged', handleChainChanged);
-      provider.on('disconnect', handleDisconnect);
+      provider.on("accountsChanged", handleAccountsChanged);
+      provider.on("chainChanged", handleChainChanged);
+      provider.on("disconnect", handleDisconnect);
 
       // Subscription Cleanup
       return () => {
         if (provider.removeListener) {
-          provider.removeListener('accountsChanged', handleAccountsChanged);
-          provider.removeListener('chainChanged', handleChainChanged);
-          provider.removeListener('disconnect', handleDisconnect);
+          provider.removeListener("accountsChanged", handleAccountsChanged);
+          provider.removeListener("chainChanged", handleChainChanged);
+          provider.removeListener("disconnect", handleDisconnect);
         }
       };
     }

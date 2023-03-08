@@ -18,6 +18,11 @@ module.exports = {
       allowUnlimitedContractSize: true,
       accounts: [privateKey],
     },
+    mantel: {
+      url: "https://rpc.testnet.mantle.xyz",
+      allowUnlimitedContractSize: true,
+      accounts: [privateKey],
+    },
     testnet: {
       url: "https://eth.bd.evmos.dev:8545",
       accounts: [privateKey],

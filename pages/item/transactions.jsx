@@ -35,7 +35,7 @@ const Item = () => {
         <div className="container">
           {/* <!-- Item --> */}
           {items_data
-            .filter((item) => item.id === 1)
+            .filter((item) => item.id === 6)
             .map((item) => {
               const {
                 image,

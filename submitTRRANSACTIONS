@@ -1,0 +1,10 @@
+import Web3 from "web3";
+const web3 = new Web3(Web3.givenProvider);
+
+const myString = "Hello, world!";
+const myBytes = web3.utils.asciiToHex(myString);
+
+// Assuming you have already obtained the contract instance and set the necessary variables
+const txIndex = await myContract.methods
+  .submitTransaction(destination, value, myBytes, timelock, authorizedUsers)
+  .send({ from: myAddress });

@@ -1,113 +1,66 @@
-import React from 'react';
-import Link from 'next/link';
-import { items_offer_data } from '../../data/items_tabs_data';
+import React from "react";
+import Link from "next/link";
+import { items_offer_data } from "../../data/items_tabs_data";
 
 const OfferTab = () => {
-	return (
-		<>
-			{/* <!-- Offers --> */}
-			<div
-				className="tab-pane fade show active"
-				id="offers"
-				role="tabpanel"
-				aria-labelledby="offers-tab"
-			>
-				<div
-					role="table"
-					className="scrollbar-custom dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 grid max-h-72 w-full grid-cols-5 overflow-y-auto rounded-lg rounded-tl-none border bg-white text-sm dark:text-white"
-				>
-					<div className="contents" role="row">
-						<div
-							className="dark:bg-jacarta-600 bg-light-base sticky top-0 py-2 px-4"
-							role="columnheader"
-						>
-							<span className="text-jacarta-700 dark:text-jacarta-100 w-full overflow-hidden text-ellipsis">
-								Price
-							</span>
-						</div>
-						<div
-							className="dark:bg-jacarta-600 bg-light-base sticky top-0 py-2 px-4"
-							role="columnheader"
-						>
-							<span className="text-jacarta-700 dark:text-jacarta-100 w-full overflow-hidden text-ellipsis">
-								USD Price
-							</span>
-						</div>
-						<div
-							className="dark:bg-jacarta-600 bg-light-base sticky top-0 py-2 px-4"
-							role="columnheader"
-						>
-							<span className="text-jacarta-700 dark:text-jacarta-100 w-full overflow-hidden text-ellipsis">
-								Floor Difference
-							</span>
-						</div>
-						<div
-							className="dark:bg-jacarta-600 bg-light-base sticky top-0 py-2 px-4"
-							role="columnheader"
-						>
-							<span className="text-jacarta-700 dark:text-jacarta-100 w-full overflow-hidden text-ellipsis">
-								Expiration
-							</span>
-						</div>
-						<div
-							className="dark:bg-jacarta-600 bg-light-base sticky top-0 py-2 px-4"
-							role="columnheader"
-						>
-							<span className="text-jacarta-700 dark:text-jacarta-100 w-full overflow-hidden text-ellipsis">
-								From
-							</span>
-						</div>
-					</div>
-					{items_offer_data.map((item) => {
-						const { ethPrice, id, usdPrice, difference, Expiration, user } = item;
-						return (
-							<div className="contents" role="row" key={id}>
-								<div
-									className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap border-t py-4 px-4"
-									role="cell"
-								>
-									<span className="-ml-1" data-tippy-content="ETH">
-										<svg className="icon mr-1 h-4 w-4">
-											<use xlinkHref="/icons.svg#icon-ETH"></use>
-										</svg>
-									</span>
-									<span className="text-green text-sm font-medium tracking-tight">
-										{ethPrice} ETH
-									</span>
-								</div>
-								<div
-									className="dark:border-jacarta-600 border-jacarta-100 flex items-center border-t py-4 px-4"
-									role="cell"
-								>
-									{usdPrice}
-								</div>
-								<div
-									className="dark:border-jacarta-600 border-jacarta-100 flex items-center border-t py-4 px-4"
-									role="cell"
-								>
-									{difference} below
-								</div>
-								<div
-									className="dark:border-jacarta-600 border-jacarta-100 flex items-center border-t py-4 px-4"
-									role="cell"
-								>
-									in {Expiration} months
-								</div>
-								<div
-									className="dark:border-jacarta-600 border-jacarta-100 flex items-center border-t py-4 px-4"
-									role="cell"
-								>
-									<Link href="#">
-										<a className="text-accent">{user}</a>
-									</Link>
-								</div>
-							</div>
-						);
-					})}
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <>
+      {/* <!-- Offers --> */}
+      <div
+        className="tab-pane fade show active"
+        id="offers"
+        role="tabpanel"
+        aria-labelledby="offers-tab"
+      >
+        <button className="focus:outline-none text-white bg-blue my-3 rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+          Add account
+        </button>
+        <div className="relative border-2 mt-2 overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="col" className="px-6 py-3">
+                  Address{" "}
+                </th>
+
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  0x6d8ee381e727bd18Eda7b3661621A123058Ce17d
+                </th>
+                <td className="px-6 py-4">
+                  <button className="focus:outline-none text-white bg-red rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                    remove
+                  </button>
+                </td>{" "}
+              </tr>
+              <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  0x6d8ee381e727bd18Eda7b3661621A123058Ce17d
+                </th>
+                <td className="px-6 py-4">
+                  <button className="focus:outline-none text-white bg-red rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                    remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default OfferTab;

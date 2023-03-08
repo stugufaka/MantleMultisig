@@ -14,16 +14,7 @@ const Home_1 = () => {
   const { address, signer, contract, provider, chainId, connect } =
     useContext(AuthContext);
 
-  const [nfts, setnft] = useState([]);
-  async function loadNFTS() {
-    const nft = await contract?.fetchMarketItems();
-    setnft(nft);
-  }
-  useEffect(() => {
-    loadNFTS();
-  }, [contract]);
-
-  //   console.log(nfts);
+  console.log("contractssss-----", contract);
   return (
     <main>
       <Meta title="Universo" />
