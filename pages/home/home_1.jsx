@@ -23,14 +23,14 @@ const Home_1 = () => {
     loadNFTS();
   }, [contract]);
 
-//   console.log(nfts);
+  //   console.log(nfts);
   return (
     <main>
       <Meta title="Universo" />
       <Hero />
-      <Bids nft={nfts} />
+      {/* <Bids nft={nfts} /> */}
       {/* <Top_collection /> */}
-      <Tranding_category nft={nfts} />
+      {/* <Tranding_category nft={nfts} /> */}
       {/* <NewseLatter /> */}
     </main>
   );

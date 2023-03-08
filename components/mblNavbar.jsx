@@ -23,7 +23,7 @@ const MblNavbar = ({ theme }) => {
     chainId,
     connect,
     web3Provider,
-    disconnect
+    disconnect,
   } = useContext(AuthContext);
   const handleItemDropdown = (e) => {
     const target = e.target.closest("li");
@@ -351,21 +351,6 @@ const MblNavbar = ({ theme }) => {
               </Link>
             </button>
           </li>
-          <li className="js-nav-dropdown group relative">
-            <button
-              className={
-                router.asPath === "/home/home_3"
-                  ? "dropdown-toggle font-display  hover:text-accent focus:text-accent flex items-center justify-between py-3.5 text-base lg:text-white text-jacarta-700 dark:text-white lg:px-5 w-full"
-                  : "dropdown-toggle text-jacarta-700 font-display hover:text-accent focus:text-accent dark:hover:text-accent dark:focus:text-accent flex items-center justify-between py-3.5 text-base dark:text-white lg:px-5 w-full"
-              }
-              // onClick={(e) => handleItemDropdown(e)}
-            >
-              <span className={navText === "pages" ? "text-accent" : ""}>
-                <Link href="/collection/explore_collection">Explorer</Link>
-              </span>
-            </button>
-          </li>
-
           <li className="group">
             <Link href="/create">
               <a
@@ -382,11 +367,25 @@ const MblNavbar = ({ theme }) => {
                   }
                 >
                   <span className={navText === "create" ? "text-accent" : ""}>
-                    Create
+                    Transactions
                   </span>
                 </button>
               </a>
             </Link>
+          </li>
+          <li className="js-nav-dropdown group relative">
+            <button
+              className={
+                router.asPath === "/home/home_3"
+                  ? "dropdown-toggle font-display  hover:text-accent focus:text-accent flex items-center justify-between py-3.5 text-base lg:text-white text-jacarta-700 dark:text-white lg:px-5 w-full"
+                  : "dropdown-toggle text-jacarta-700 font-display hover:text-accent focus:text-accent dark:hover:text-accent dark:focus:text-accent flex items-center justify-between py-3.5 text-base dark:text-white lg:px-5 w-full"
+              }
+              // onClick={(e) => handleItemDropdown(e)}
+            >
+              <span className={navText === "pages" ? "text-accent" : ""}>
+                <Link href="/collection/explore_collection">Admin</Link>
+              </span>
+            </button>
           </li>
         </ul>
       </nav>
@@ -547,38 +546,37 @@ const MblNavbar = ({ theme }) => {
               </a>
             </Link>
 
-              <a className="dark:hover:bg-jacarta-600 cursor-pointer hover:text-accent focus:text-accent hover:bg-jacarta-50 flex items-center space-x-2 rounded-xl px-5 py-2 transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  className="fill-jacarta-700 h-4 w-4 transition-colors dark:fill-white"
+            <a className="dark:hover:bg-jacarta-600 cursor-pointer hover:text-accent focus:text-accent hover:bg-jacarta-50 flex items-center space-x-2 rounded-xl px-5 py-2 transition-colors">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                className="fill-jacarta-700 h-4 w-4 transition-colors dark:fill-white"
+              >
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM7 11V8l-5 4 5 4v-3h8v-2H7z"></path>
+              </svg>
+              {!web3Provider ? (
+                <span
+                  onClick={() => {
+                    connect();
+                  }}
+                  className="font-display text-jacarta-700 mt-1 text-sm dark:text-white"
                 >
-                  <path fill="none" d="M0 0h24v24H0z"></path>
-                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM7 11V8l-5 4 5 4v-3h8v-2H7z"></path>
-                </svg>
-                {!web3Provider ? (
-                  <span
-                    onClick={() => {
-                      connect();
-                    }}
-                    className="font-display text-jacarta-700 mt-1 text-sm dark:text-white"
-                  >
-                    connect{" "}
-                  </span>
-                ) : (
-                  <span
-                    onClick={() => {
-                      disconnect();
-                    }}
-                    className="font-display text-jacarta-700 mt-1 text-sm dark:text-white"
-                  >
-                    Disconnect{" "}
-                  </span>
-                )}
-              </a>
-            
+                  connect{" "}
+                </span>
+              ) : (
+                <span
+                  onClick={() => {
+                    disconnect();
+                  }}
+                  className="font-display text-jacarta-700 mt-1 text-sm dark:text-white"
+                >
+                  Disconnect{" "}
+                </span>
+              )}
+            </a>
           </div>
         </div>
 
