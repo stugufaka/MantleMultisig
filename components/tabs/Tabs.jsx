@@ -62,49 +62,71 @@ const ItemsTabs = () => {
             <Properties />
           </TabPanel>
           <TabPanel>
-            {/* <!-- Details --> */}
             <div
-              className="tab-pane fade"
-              id="details"
+              className="tab-pane fade show active"
+              id="offers"
               role="tabpanel"
-              aria-labelledby="details-tab"
+              aria-labelledby="offers-tab"
             >
-              <div className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 rounded-t-2lg rounded-b-2lg rounded-tl-none border bg-white p-6 md:p-10">
-                <div className="mb-2 flex items-center">
-                  <span className="dark:text-jacarta-300 mr-2 min-w-[9rem]">
-                    Contract Address:
-                  </span>
-                  <a href="#" className="text-accent">
-                    0x1cBB182322Aee8ce9F4F1f98d7460173ee30Af1F
-                  </a>
-                </div>
-                <div className="mb-2 flex items-center">
-                  <span className="dark:text-jacarta-300 mr-2 min-w-[9rem]">
-                    Token ID:
-                  </span>
-                  <span
-                    className="js-copy-clipboard text-jacarta-700 cursor-pointer select-none dark:text-white"
-                    data-tippy-content="Copy"
-                  >
-                    7714
-                  </span>
-                </div>
-                <div className="mb-2 flex items-center">
-                  <span className="dark:text-jacarta-300 mr-2 min-w-[9rem]">
-                    Token Standard:
-                  </span>
-                  <span className="text-jacarta-700 dark:text-white">
-                    ERC-721
-                  </span>
-                </div>
-                <div className="flex items-center">
-                  <span className="dark:text-jacarta-300 mr-2 min-w-[9rem]">
-                    Blockchain:
-                  </span>
-                  <span className="text-jacarta-700 dark:text-white">
-                    Ethereum
-                  </span>
-                </div>
+              <button className="focus:outline-none text-white bg-blue my-3 rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                Set Signatures
+              </button>
+              <div className="relative border-2 mt-2 overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th scope="col" className="px-6 py-3">
+                        Destination address{" "}
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        value
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Data
+                      </th>
+
+                      <th scope="col" className="px-6 py-3">
+                        AuthorizedUsers
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        0x6d8ee381e727bd18Eda7b3661621A123058Ce17d
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        2 ETH
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        Some Important Data
+                      </th>
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        [ ' 0x6..7d',' 0x6..7d' ]
+                      </th>
+                      <td className=" py-4">
+                        <button className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                          Execute
+                        </button>
+                      </td>{" "}
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </TabPanel>
