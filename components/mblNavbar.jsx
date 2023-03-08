@@ -352,7 +352,7 @@ const MblNavbar = ({ theme }) => {
             </button>
           </li>
           <li className="group">
-            <Link href="/create">
+            <Link href="/item/transactions">
               <a
                 onClick={() => {
                   dispatch(closeMblMenu());
@@ -383,7 +383,7 @@ const MblNavbar = ({ theme }) => {
               // onClick={(e) => handleItemDropdown(e)}
             >
               <span className={navText === "pages" ? "text-accent" : ""}>
-                <Link href="/collection/explore_collection">Admin</Link>
+                <Link href="/item/transactions">Admin</Link>
               </span>
             </button>
           </li>

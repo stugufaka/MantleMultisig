@@ -33,7 +33,7 @@ const hero = () => {
             <div className="flex space-x-4">
               <Link href="/create">
                 <a className="bg-accent shadow-accent-volume hover:bg-accent-dark w-max rounded-full py-3 px-8 text-center font-semibold text-white transition-all">
-                  Submit Transaction{" "}
+                  Create Transaction{" "}
                 </a>
               </Link>
               {/* <Link href="/collection/explore_collection">
