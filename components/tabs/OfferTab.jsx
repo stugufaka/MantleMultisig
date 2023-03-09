@@ -10,6 +10,8 @@ import {
   Row,
   Checkbox,
   Progress,
+  Spinner,
+  Loading,
 } from "@nextui-org/react";
 import { AuthContext } from "../../utils/AuthProvider";
 
@@ -31,7 +33,6 @@ const OfferTab = () => {
   useEffect(() => {
     loadOwners();
   }, [contract]);
-  console.log("is owner----", owners);
 
   const closeHandler = () => {
     setVisible(false);
@@ -49,15 +50,62 @@ const OfferTab = () => {
       let transaction = await signer?.addOwner(addresseth);
       await transaction?.wait();
       console.log("transaction", transaction);
+      setAddress("");
+
+      alert("Account added successfully");
       setisloading(false);
+      closeHandler();
     } catch (error) {
-      console.log("error", error);
+      switch (error.code) {
+        case "UNPREDICTABLE_GAS_LIMIT":
+          alert("Gas limit is too high or too low");
+          break;
+        case "UNPREDICTABLE_GAS_PRICE":
+          alert("Gas price is too high or too low");
+          break;
+        case "INSUFFICIENT_FUNDS":
+          alert("Insufficient funds for the transaction");
+          break;
+        default:
+          alert("An error occurred: ", error.message);
+      }
     }
 
     // notify("NFT Created Successfully");
     // alert("NFT created Successfully");
   };
 
+  const onRemoveAddress = async (address) => {
+    try {
+      setisloading(true);
+
+      let transaction = await signer?.removeOwner(address);
+      await transaction?.wait();
+      console.log("transaction", transaction);
+      setAddress("");
+
+      alert("Account deleted successfully");
+      setisloading(false);
+      closeHandler();
+    } catch (error) {
+      switch (error.code) {
+        case "UNPREDICTABLE_GAS_LIMIT":
+          alert("Gas limit is too high or too low");
+          break;
+        case "UNPREDICTABLE_GAS_PRICE":
+          alert("Gas price is too high or too low");
+          break;
+        case "INSUFFICIENT_FUNDS":
+          alert("Insufficient funds for the transaction");
+          break;
+        default:
+          alert("An error occurred: ", error.message);
+      }
+    }
+
+    // notify("NFT Created Successfully");
+    // alert("NFT created Successfully");
+  };
   return (
     <>
       <Modal
@@ -129,32 +177,26 @@ const OfferTab = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  0x6d8ee381e727bd18Eda7b3661621A123058Ce17d
-                </th>
-                <td className="px-6 py-4">
-                  <button className="focus:outline-none text-white bg-red rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                    remove
-                  </button>
-                </td>{" "}
-              </tr>
-              <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  0x6d8ee381e727bd18Eda7b3661621A123058Ce17d
-                </th>
-                <td className="px-6 py-4">
-                  <button className="focus:outline-none text-white bg-red rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                    remove
-                  </button>
-                </td>
-              </tr>
+              {owners?.map((account, index) => (
+                <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {account}
+                  </th>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => {
+                        onRemoveAddress(account);
+                      }}
+                      className="focus:outline-none text-white bg-red rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    >
+                      {isloading ? <Loading /> : "remove"}
+                    </button>
+                  </td>{" "}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
