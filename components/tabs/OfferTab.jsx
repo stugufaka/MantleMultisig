@@ -19,6 +19,7 @@ const OfferTab = () => {
   const { address, signer, contract, provider, chainId, connect } =
     useContext(AuthContext);
   const [isloading, setisloading] = useState(false);
+  const [isloadingAcc, setisloadingAcc] = useState(false);
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
 
@@ -32,7 +33,7 @@ const OfferTab = () => {
   }
   useEffect(() => {
     loadOwners();
-  }, [contract]);
+  }, [contract, isloading]);
 
   const closeHandler = () => {
     setVisible(false);
@@ -77,7 +78,7 @@ const OfferTab = () => {
 
   const onRemoveAddress = async (address) => {
     try {
-      setisloading(true);
+      setisloadingAcc(true);
 
       let transaction = await signer?.removeOwner(address);
       await transaction?.wait();
@@ -85,7 +86,7 @@ const OfferTab = () => {
       setAddress("");
 
       alert("Account deleted successfully");
-      setisloading(false);
+      setisloadingAcc(false);
       closeHandler();
     } catch (error) {
       switch (error.code) {
@@ -192,7 +193,11 @@ const OfferTab = () => {
                       }}
                       className="focus:outline-none text-white bg-red rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                     >
-                      {isloading ? <Loading /> : "remove"}
+                      {isloadingAcc ? (
+                        <Loading size="sm" color={"white"} />
+                      ) : (
+                        "remove"
+                      )}
                     </button>
                   </td>{" "}
                 </tr>

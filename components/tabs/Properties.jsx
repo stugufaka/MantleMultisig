@@ -1,8 +1,35 @@
+import React, { useState, useEffect, useContext } from "react";
+
 import Link from "next/link";
-import React from "react";
-import { items_Properties_data } from "../../data/items_tabs_data";
+import { items_offer_data } from "../../data/items_tabs_data";
+import {
+  Modal,
+  Button,
+  Text,
+  Input,
+  Row,
+  Checkbox,
+  Progress,
+  Spinner,
+  Loading,
+} from "@nextui-org/react";
+import { AuthContext } from "../../utils/AuthProvider";
+import { ellipseAddress } from "../../lib/utilities";
 
 const Properties = () => {
+  const { address, signer, contract, provider, chainId, connect } =
+    useContext(AuthContext);
+
+  const [transactions, settransactions] = useState([]);
+  async function loadtransactions() {
+    const transactions = await contract?.getAllTransactions();
+    settransactions(transactions);
+  }
+  useEffect(() => {
+    loadtransactions();
+  }, [contract]);
+
+  console.log(transactions);
   return (
     <>
       {/* <!-- Properties --> */}
@@ -38,37 +65,41 @@ const Properties = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  0x6d8ee381e727bd18Eda7b3661621A123058Ce17d
-                </th>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  2 ETH
-                </th>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Some Important Data
-                </th>
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  [ ' 0x6..7d',' 0x6..7d' ]
-                </th>
-                <td className=" py-4">
-                  <button className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                    Confirm
-                  </button>
-                </td>{" "}
-              </tr>
+              {transactions?.map((transaction, index) => {
+                return (
+                  <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {ellipseAddress(transaction?.destination)}{" "}
+                    </th>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {transaction?.value?.toString()} ETH
+                    </th>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      Some Important Data
+                    </th>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      [ ' 0x6..7d',' 0x6..7d' ]
+                    </th>
+                    <td className=" py-4">
+                      <button className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                        Confirm
+                      </button>
+                    </td>{" "}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

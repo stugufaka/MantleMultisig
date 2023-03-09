@@ -4,4 +4,4 @@
 
 // export const donationAddress = '0xd1C14349664831a670cB5DCB030E012BB40cCd1f';
 // export const donationAddress = '0xCa42c23f1E51631d8Cc56B646B3d2CD9781Ae826';
-export const donationAddress = "0x3dcE4c1E8ede9c75cB9031B89C873922b20A5CbF";
+export const donationAddress = "0x20eD28104e6F01C3a519C2E9Fea7d648b9827619";

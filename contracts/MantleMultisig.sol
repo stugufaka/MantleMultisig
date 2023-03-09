@@ -144,6 +144,11 @@ contract MantleMultisig {
         return (transaction.destination, transaction.value, transaction.data, transaction.executed, transaction.timelock, transaction.authorizedUsers);
     }
 
+
+    function getAllTransactions() public view returns (Transaction[] memory) {
+         return transactions;
+    }
+
     function getPendingTransactions() public view returns (uint[] memory) {
         uint[] memory pendingTransactions = new uint[](transactions.length);
         uint count = 0;
