@@ -23,11 +23,17 @@ const Properties = () => {
   const { address, signer, contract, provider, chainId, connect } =
     useContext(AuthContext);
   const [isloading, setisloading] = useState(false);
-
+  const [isConfirmed, setisConfirmed] = useState(false);
   const [transactions, settransactions] = useState([]);
   async function loadtransactions() {
     const transactions = await contract?.getAllTransactions();
     settransactions(transactions);
+  }
+
+  async function isConfirmedHandler(id, owner) {
+    const confirmed = await contract?.isConfirmed(id, owner);
+    console.log(isConfirmed);
+    setisConfirmed(confirmed);
   }
 
   async function getTransaction() {
@@ -35,6 +41,7 @@ const Properties = () => {
     // settransactions(transactions);
     console.log(transactions);
   }
+
   useEffect(() => {
     loadtransactions();
     getTransaction();
@@ -73,11 +80,40 @@ const Properties = () => {
     try {
       setisloading(true);
       // await handleDeposit();
-      let transaction = await signer?.executeTransaction(index);
+      let transaction = await signer?.confirmTransaction(index);
       await transaction?.wait();
       console.log("transaction", transaction);
 
       alert("Transaction confirmed successfully");
+      setisloading(false);
+    } catch (error) {
+      switch (error.code) {
+        case "UNPREDICTABLE_GAS_LIMIT":
+          alert("Gas limit is too high or too low");
+          break;
+        case "UNPREDICTABLE_GAS_PRICE":
+          alert("Gas price is too high or too low");
+          break;
+        case "INSUFFICIENT_FUNDS":
+          alert("Insufficient funds for the transaction");
+          break;
+        default:
+          alert("An error occurred: ", error.message);
+          console.log(error);
+      }
+    }
+  };
+
+  const onExecuteTransaction = async (index) => {
+    console.log(index);
+    try {
+      setisloading(true);
+      // await handleDeposit();
+      let transaction = await signer?.executeTransaction(index);
+      await transaction?.wait();
+      console.log("transaction", transaction);
+
+      alert("Transaction executed successfully");
       setisloading(false);
     } catch (error) {
       switch (error.code) {
@@ -142,6 +178,7 @@ const Properties = () => {
             </thead>
             <tbody>
               {transactions?.map((transaction, index) => {
+                isConfirmedHandler(index, transaction?.destination);
                 return (
                   <tr className="bg-gray-900 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
@@ -169,20 +206,43 @@ const Properties = () => {
                     >
                       {transaction.authorizedUsers}
                     </th>
-                    <td className=" py-4">
-                      <button
-                        onClick={() => {
-                          onConfirmTransaction(index);
-                        }}
-                        className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                      >
-                        {/* {isloading ? (
-                          <Loading size="sm" color={"white"} />
-                        ) : ( */}
-                        "Execute"
-                        {/* )} */}
-                      </button>
-                    </td>{" "}
+                    {isConfirmed ? (
+                      <td className=" py-4">
+                        <button
+                          onClick={() => {
+                            onConfirmTransaction(index);
+                          }}
+                          className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        >
+                          Confirmed
+                        </button>
+                      </td>
+                    ) : (
+                      <td className=" py-4">
+                        <button
+                          onClick={() => {
+                            onExecuteTransaction(index);
+                          }}
+                          className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        >
+                          Confirm
+                        </button>
+                      </td>
+                    )}
+                    {isConfirmed ? (
+                      <td className=" py-4">
+                        <button
+                          onClick={() => {
+                            onConfirmTransaction(index);
+                          }}
+                          className="focus:outline-none text-white bg-blue rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        >
+                          Execute
+                        </button>
+                      </td>
+                    ) : (
+                      ""
+                    )}
                   </tr>
                 );
               })}
