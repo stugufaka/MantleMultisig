@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import Web3 from "web3";
 
 import Link from "next/link";
 import { items_offer_data } from "../../data/items_tabs_data";
@@ -15,21 +16,87 @@ import {
 } from "@nextui-org/react";
 import { AuthContext } from "../../utils/AuthProvider";
 import { ellipseAddress } from "../../lib/utilities";
+import { ethers } from "ethers";
+import { hexToString } from "web3-utils";
 
 const Properties = () => {
   const { address, signer, contract, provider, chainId, connect } =
     useContext(AuthContext);
+  const [isloading, setisloading] = useState(false);
 
   const [transactions, settransactions] = useState([]);
   async function loadtransactions() {
     const transactions = await contract?.getAllTransactions();
     settransactions(transactions);
   }
+
+  async function getTransaction() {
+    const transactions = await contract?.getTransaction(0);
+    // settransactions(transactions);
+    console.log(transactions);
+  }
   useEffect(() => {
     loadtransactions();
+    getTransaction();
   }, [contract]);
 
   console.log(transactions);
+
+  const handleClick = async () => {
+    const input = window.prompt("Please enter the number of signatures:");
+    if (input) {
+      let transaction = await signer?.setRequiredSignatures(input);
+      await transaction?.wait();
+      console.log("transaction", transaction);
+    } else {
+      console.log("No input was provided.");
+    }
+  };
+
+  async function handleDeposit() {
+    const input = window.prompt("Please enter amount to deposite");
+    if (input) {
+      let transaction = await signer?.setRequiredSignatures(input);
+      await transaction?.wait();
+      console.log("transaction", transaction);
+    } else {
+      console.log("No input was provided.");
+    }
+    await signer?.deposit({
+      value: ethers.utils.parseUnits(input?.toString(), "ether"),
+    });
+    // Clear input field after successful deposit
+  }
+
+  const onConfirmTransaction = async (index) => {
+    console.log(index);
+    try {
+      setisloading(true);
+      // await handleDeposit();
+      let transaction = await signer?.executeTransaction(index);
+      await transaction?.wait();
+      console.log("transaction", transaction);
+
+      alert("Transaction confirmed successfully");
+      setisloading(false);
+    } catch (error) {
+      switch (error.code) {
+        case "UNPREDICTABLE_GAS_LIMIT":
+          alert("Gas limit is too high or too low");
+          break;
+        case "UNPREDICTABLE_GAS_PRICE":
+          alert("Gas price is too high or too low");
+          break;
+        case "INSUFFICIENT_FUNDS":
+          alert("Insufficient funds for the transaction");
+          break;
+        default:
+          alert("An error occurred: ", error.message);
+          console.log(error);
+      }
+    }
+  };
+
   return (
     <>
       {/* <!-- Properties --> */}
@@ -39,8 +106,17 @@ const Properties = () => {
         role="tabpanel"
         aria-labelledby="offers-tab"
       >
-        <button className="focus:outline-none text-white bg-blue my-3 rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+        <button
+          onClick={handleClick}
+          className="focus:outline-none text-white bg-blue my-3 rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+        >
           Set Signatures
+        </button>
+        <button
+          onClick={handleDeposit}
+          className="focus:outline-none text-white bg-blue my-3 rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+        >
+          Deposite
         </button>
         <div className="relative border-2 mt-2 overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -78,23 +154,33 @@ const Properties = () => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {transaction?.value?.toString()} ETH
+                      {ethers.utils.formatEther(transaction?.value?.toString())}{" "}
+                      ETH
                     </th>
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      Some Important Data
+                      {hexToString(transaction?.data)}
                     </th>
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      [ ' 0x6..7d',' 0x6..7d' ]
+                      {transaction.authorizedUsers}
                     </th>
                     <td className=" py-4">
-                      <button className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-                        Confirm
+                      <button
+                        onClick={() => {
+                          onConfirmTransaction(index);
+                        }}
+                        className="focus:outline-none text-white bg-green rounded-full hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium  text-sm px-5 py-1.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                      >
+                        {/* {isloading ? (
+                          <Loading size="sm" color={"white"} />
+                        ) : ( */}
+                        "Execute"
+                        {/* )} */}
                       </button>
                     </td>{" "}
                   </tr>
