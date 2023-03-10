@@ -319,7 +319,7 @@ const Item = () => {
         </div>
       </section>
       {/* <!-- end item --> */}
-      <More_items />
+      {/* <More_items /> */}
     </>
   );
 };

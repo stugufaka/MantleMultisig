@@ -373,7 +373,7 @@ const MblNavbar = ({ theme }) => {
               </a>
             </Link>
           </li>
-          <li className="js-nav-dropdown group relative">
+          {/* <li className="js-nav-dropdown group relative">
             <button
               className={
                 router.asPath === "/home/home_3"
@@ -386,7 +386,7 @@ const MblNavbar = ({ theme }) => {
                 <Link href="/item/transactions">Admin</Link>
               </span>
             </button>
-          </li>
+          </li> */}
         </ul>
       </nav>
 
