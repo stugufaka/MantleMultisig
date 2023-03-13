@@ -1,37 +1,34 @@
 <div align="center">
-  <a href="https://ipfs.infura.io/ipfs/Qmade64cdA3YaNfThD8Pr5AVedwhxHa213AYbr5J5h7waH">
-    <img width="200" src="https://i.ibb.co/zG5BvBP/logo1.png" alt="logo">
-  </a>
-  <h3 align="center">Universo</h3>
+  
+  <h3 align="center">MantleMultisig</h3>
 
   <p align="center">
     An online NFT platform
     <br />
-    <a href="https://github.com/mendsalbert/nftproject"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/stugufaka/MantleMultisig"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://universonft.netlify.app/">View App</a>
+    <a href="https://mantlemultisig.netlify.app/">View App</a>
     
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
-
-<img src="https://i.ibb.co/YdpnJDH/Screenshot-2022-11-15-at-5-00-09-AM.png" alt="screenshot" width="" >
-
 # What it does
 
-NFTs have been around for a while now, but their popularity has exploded in recent months. So what exactly are NFTs? And why are they so popular?
+MantleMultisig contract is a smart contract on the Ethereum blockchain that implements a multi-signature wallet with the following features:
 
-NFTs, or non-fungible tokens, are digital assets that are unique and cannot be replicated. This makes them perfect for things like collectibles, art, and other digital items that have value because they are rare.
+Multiple owners: The wallet can have multiple owners, each of whom has the ability to submit and confirm transactions.
+Required signatures: The number of required signatures can be set, which determines the minimum number of confirmations needed to execute a transaction.
 
-One of the reasons NFTs have become so popular is because they provide a way for artists and creators to monetize their work in a way that wasn't possible before. For example, an artist can create a digital painting and then sell it as an NFT. The buyer can then display the painting in their digital gallery or even resell it for a profit.
+Timelock: Transactions can be timelocked, which means they can only be executed after a certain amount of time has elapsed.
 
-Another reason NFTs are gaining in popularity is because they're a way to invest in the future of the digital world. As more and more of our lives move online, it's likely that NFTs will become an important part of the digital economy. So by buying NFTs now, you're investing in the future of the digital world.
+Authorized users: Each transaction can have a list of authorized users who have permission to execute the transaction.
 
-If you're interested in buying NFTs, one of the best places to do so is Universo. Universo is an online NFT platform that restores the original and classic NFTs. With a simple interface, you can upload an NFT and start selling it directly on the market.
+Nonce: Each transaction is associated with a nonce, which is used to prevent replay attacks.
+
+Events: The contract emits events for depositing funds, submitting transactions, confirming transactions, and executing transactions.
 
 # Built With
 
@@ -65,7 +62,7 @@ To run this project locally, follow these steps.
 1. Clone the project locally, change into the directory, and install the dependencies:
 
 ```
-git clone https://github.com/mendsalbert/nftproject
+git clone https://github.com/stugufaka/MantleMultisig
 
 cd nftproject
 
@@ -117,8 +114,9 @@ module.exports = {
       allowUnlimitedContractSize: true,
     },
 
-    matic: {
-      url: "---matic url here---",
+    mantel: {
+      url: "https://rpc.testnet.mantle.xyz",
+      allowUnlimitedContractSize: true,
       accounts: [privateKey],
     },
   },
